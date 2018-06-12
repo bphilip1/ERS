@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-export class Welcome extends Component {
-  render() {
-    return <div>Homepage</div>;
-  }
-}
+import Routers from './routers/routers';
 
-ReactDOM.render(<Welcome />, document.getElementById('root'));
+ReactDOM.render(<Routers />, document.getElementById('root'));

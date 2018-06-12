@@ -10,7 +10,7 @@ import webpackConfig from '../webpack.config';
 //webpack server
 import webpackDevMiddleware from 'webpack-dev-middleware';
 //updates components in realtime
-// import webpackHotMiddleware from 'webpack-hot-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware';
 //provides istory object to go to different routes in react router
 import historyApiFallback from 'connect-history-api-fallback';
 
@@ -101,7 +101,7 @@ if (isDev) {
   );
 
   // force webpackhot to use webpack config file
-  // app.use(webpackHotMiddleware(compiler))
+  app.use(webpackHotMiddleware(compiler));
 
   // ?
   app.use(express.static(path.resolve(__dirname, '../dist')));
