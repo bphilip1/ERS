@@ -17,20 +17,26 @@ export class NewReimbursementComponent extends Component<any, any> {
 
   onSubmitHandler = e => {
     e.preventDefault();
-    const { title, amount, description, timeofexpense } = this.state.items[0];
-    const Reimbursement = {
-      title: title,
-      amount: amount,
-      description: description,
-      timeofexpense: timeofexpense
+    const noZeroAmounts = this.state.items.some(
+      item =>
+        item.amount === 0 ||
+        item.title.length === 0 ||
+        item.description.length === 0 ||
+        item.timeofexpense === 0
+    );
+    if (noZeroAmounts) return;
+
+    console.log('should only appear if nothing is empty');
+    const reimbursement = {
+      items: this.state.items
     };
 
-    // axios
-    //   .post('/signUp', { user })
-    //   .then(resp => resp.data)
-    //   .then(user => {
-    //     console.log(user);
-    //   });
+    axios
+      .post('/create', { reimbursement })
+      .then(resp => resp.data)
+      .then(reimbursement => {
+        console.log(reimbursement);
+      });
   };
 
   addNewItem = () => {
@@ -51,6 +57,7 @@ export class NewReimbursementComponent extends Component<any, any> {
   onChangeHandler = e => {
     const divId = e.target.parentNode.id;
     const elementName = e.target.name;
+
     const updatedState = this.state.items.map(item => {
       if (item.id != divId) {
         return item;
@@ -105,6 +112,7 @@ export class NewReimbursementComponent extends Component<any, any> {
                   name="title"
                   value={item.title}
                   onChange={this.onChangeHandler}
+                  required
                 />
                 <label htmlFor="amount">Amount:</label>
                 <input
@@ -112,6 +120,7 @@ export class NewReimbursementComponent extends Component<any, any> {
                   name="amount"
                   value={item.amount}
                   onChange={this.onChangeHandler}
+                  required
                 />
                 <label htmlFor="description">Description:</label>
                 <input
@@ -119,13 +128,15 @@ export class NewReimbursementComponent extends Component<any, any> {
                   name="description"
                   value={item.description}
                   onChange={this.onChangeHandler}
+                  required
                 />
                 <label htmlFor="timeofexpense">Time of Expense:</label>
                 <input
-                  type="text"
+                  type="date"
                   name="timeofexpense"
                   value={item.timeofexpense}
                   onChange={this.onChangeHandler}
+                  required
                 />
               </div>
             );

@@ -1,7 +1,6 @@
 import * as userDao from '../dao/user-dao';
 
 export function signUp(userData: any) {
-  console.log('now in user service');
   return userDao.signUp(userData);
 }
 

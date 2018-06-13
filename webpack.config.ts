@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 
 const config: webpack.Configuration = {
   entry: {
@@ -46,6 +47,38 @@ const config: webpack.Configuration = {
         ],
         exclude: /node_modules/
       },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => {
+                return [require('autoprefixer')];
+              }
+            }
+          }
+        ]
+      },
+      // {
+      //   test: /\.css$/,
+      //   use: [
+      //     ExtractCssChunks.loader,
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         sourceMap: true,
+      //         importLoaders: 1
+      //       }
+      //     }
+      //   ]
+      // },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' }
@@ -59,6 +92,9 @@ const config: webpack.Configuration = {
       template: './client/public/index.html',
       inject: 'body'
     })
+    // new ExtractCssChunks({
+    //   filename: 'css/style.css'
+    // })
   ],
 
   devServer: {

@@ -13,7 +13,9 @@ module.exports = app => {
     userService.login(req.body.user).then(maybeData => {
       const maybeUser = maybeData.Items[0];
       if (maybeUser) {
-        if (bcrypt.compare(maybeUser.password, req.body.user.password)) {
+        console.log('hash pass:', maybeUser.password);
+        console.log('client plain text pass:', req.body.user.password);
+        if (bcrypt.compareSync(req.body.user.password, maybeUser.password)) {
           console.log('passwords match');
           resp.json(maybeUser);
         } else {
