@@ -8,6 +8,6 @@ export function saveTicket(reimbursement) {
   return employeeDao.saveTicket(reimbursement);
 }
 
-export function findTicket(reimbursement) {
-  return employeeDao.findTicket(reimbursement.username);
+export function findTicket(userData) {
+  return employeeDao.findTicket(userData.username);
 }

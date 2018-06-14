@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { generateId } from '../helpers/helpers';
-export class NewReimbursementComponent extends Component<any, any> {
+import { connect } from 'react-redux';
+import { submittedTicket } from '../actions/reim.actions';
+import { RouteProps } from 'react-router';
+
+interface IProps extends RouteProps {
+  history?: any;
+  username: string;
+  addNewTicket: any;
+}
+
+export class NewReimbursementComponent extends Component<IProps, any> {
   state = {
     items: [
       {
@@ -28,14 +38,17 @@ export class NewReimbursementComponent extends Component<any, any> {
 
     console.log('should only appear if nothing is empty');
     const reimbursement = {
-      items: this.state.items
+      items: this.state.items,
+      username: this.props.username
     };
 
     axios
-      .post('/create', { reimbursement })
+      .post('/submitTicket', { reimbursement })
       .then(resp => resp.data)
-      .then(reimbursement => {
-        console.log(reimbursement);
+      .then(reimbursements => this.props.addNewTicket(reimbursements))
+      .then(() => {
+        console.log('heading to dashboard...');
+        this.props.history.push('/dashboard');
       });
   };
 
@@ -143,9 +156,21 @@ export class NewReimbursementComponent extends Component<any, any> {
           })}
           <button type="submit">Submit Reimbursement</button>
         </form>
+        <Link to="/dashboard">Dashboard</Link>
       </div>
     );
   }
 }
 
-export default NewReimbursementComponent;
+const mapStateToProps = state => ({
+  username: state.user.username
+});
+
+const mapDispatchToProps = dispatch => ({
+  addNewTicket: ticketData => dispatch(submittedTicket(ticketData))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewReimbursementComponent);

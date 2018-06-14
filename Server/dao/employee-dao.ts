@@ -16,8 +16,7 @@ export const saveTicket = reimbursement => {
     ...reimbursement,
     timesubmitted: new Date().getTime(),
     approver: 'NA',
-    status: 'pending',
-    username: 'mockusername'
+    status: 'pending'
   };
   return docClient
     .put({

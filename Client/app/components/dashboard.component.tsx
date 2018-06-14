@@ -1,62 +1,89 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 export class DashboardComponent extends Component<any, any> {
   state = {
     username: '',
     password: ''
   };
 
-  //   onSubmitHandler = e => {
-  //     e.preventDefault();
+  onSubmitHandler = e => {
+    e.preventDefault();
 
-  //     const user = {
-  //       username: this.state.username,
-  //       password: this.state.password
-  //     };
+    const user = {
+      username: 'bird',
+      password: '12345'
+    };
 
-  //     axios
-  //       .post('/login', { user })
-  //       .then(resp => resp.data)
-  //       .then(user => user)
-  //       .then(user => this.props.history.push('/dashboard'))
-  //       .catch(err => {
-  //         console.log('something went wwrong on the server');
-  //       });
-  //   };
+    axios
+      .get('/viewAll', {
+        params: {
+          username: user.username
+        }
+      })
+      .then(resp => resp.data)
+      .then(user => {
+        console.log(user);
+      });
+  };
 
   render() {
     return (
       <div>
-        <table>
-          <tr>
-            <th>Username</th>
-            <th>Timesubmitted</th>
-            <th>Type</th>
-            <th>Items</th>
-            <th>Approver</th>
-            <th>Status</th>
-          </tr>
-          <tr>
-            <td>Jill</td>
-            <td>5 pm</td>
-            <td>food</td>
-            <td>stuff</td>
-            <td>manager</td>
-            <td>pending</td>
-          </tr>
-          <tr>
-            <td>Jill</td>
-            <td>7</td>
-            <td>travel</td>
-            <td>stuff</td>
-            <td>manager</td>
-            <td>pending</td>
-          </tr>
-        </table>
+        {this.props.userRole === 'employee' && (
+          <table>
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Timesubmitted</th>
+                <th>Amount</th>
+                <th>Approver</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.props.reimbursements.map(item => {
+                const numToDate = new Date(item.timesubmitted);
+                return (
+                  <tr key={item.timesubmitted}>
+                    <td>{item.username}</td>
+                    <td>
+                      {numToDate.getMonth() +
+                        1 +
+                        '/' +
+                        numToDate.getDate() +
+                        '/' +
+                        numToDate.getFullYear()}
+                    </td>
+                    <td>
+                      {item.items
+                        .map(obj => parseFloat(obj.amount))
+                        .reduce((total, num) => total + num)}
+                    </td>
+                    <td>{item.approver}</td>
+                    <td>{item.status}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+        {this.props.userRole === 'admin' && <p>WELCOME ADMIN</p>}
         <Link to="/create">create reimbursement</Link>
+        <p>
+          <button type="submit" onSubmit={this.onSubmitHandler}>
+            populate
+          </button>
+        </p>
       </div>
     );
   }
 }
 
-export default DashboardComponent;
+const mapStateToProps = state => ({
+  reimbursements: state.reim.reimbursements,
+  userRole: state.user.role
+});
+
+export default connect(mapStateToProps)(DashboardComponent);
