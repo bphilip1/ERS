@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { Request, Response, NextFunction } from 'express';
 import * as userService from '../../services/user-service';
 import * as employeeService from '../../services/employee-service';
+import * as adminService from '../../services/admin-service';
 // routes: login(put), signup(put), find one user (get)
 // employess: create reimbursement(put), findAll reimbursements (get)
 // admin: view all reimbursements from all employees, update status
@@ -17,7 +18,19 @@ module.exports = app => {
           console.log('hash pass:', maybeUser.password);
           console.log('client plain text pass:', req.body.user.password);
           if (bcrypt.compareSync(req.body.user.password, maybeUser.password)) {
-            console.log('passwords match----------------');
+            if (maybeUser.role === 'admin') {
+              console.log('now in admin scope');
+              adminService.findTicketsByStatus('pending').then(data => {
+                maybeUser['everyReimbursement'] = data.Items;
+                const fullData = {
+                  reimbursements: maybeReim,
+                  ...maybeUser
+                };
+                console.log(fullData);
+                return resp.json(fullData);
+              });
+            }
+            console.log('skipped the IF');
             const fullData = {
               reimbursements: maybeReim,
               ...maybeUser

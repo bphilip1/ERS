@@ -2,11 +2,13 @@ export const reimbursementReducer = (state = {}, action: any = {}) => {
   switch (action.type) {
     case 'LOGIN':
       return {
-        reimbursements: action.user.reimbursements
+        reimbursements: action.user.reimbursements,
+        everyReimbursement: action.user.everyReimbursement
       };
     case 'SIGNUP':
       return {
-        reimbursements: action.user.reimbursements
+        reimbursements: action.user.reimbursements,
+        everyReimbursement: action.user.everyReimbursement
       };
     case 'SUBMITTED':
       return {

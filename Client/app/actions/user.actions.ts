@@ -10,3 +10,8 @@ export const signUp = userdata => ({
   user: userdata,
   type: 'SIGNUP'
 });
+
+export const adminApproval = userData => ({
+  user: userData,
+  type: 'APPROVAL'
+});
