@@ -113,19 +113,14 @@ export class NewReimbursementComponent extends Component<IProps, any> {
 
   render() {
     return (
-      <body>
+      <body className="text-left">
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
           <div className="collapse navbar-collapse" id="navbarsExample04">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item active">
                 <Link className="nav-link" to="/dashboard">
-                  Home
+                  Dashboard
                   <span className="sr-only">(current)</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/create">
-                  Add Reimbursement
                 </Link>
               </li>
               <li className="nav-item">
@@ -136,7 +131,16 @@ export class NewReimbursementComponent extends Component<IProps, any> {
             </ul>
           </div>
         </nav>
-        <button onClick={this.addNewItem}>Add</button>
+        <p />
+        <p />
+        <button
+          onClick={this.addNewItem}
+          type="button"
+          className="btn btn-primary"
+        >
+          Add New Item
+        </button>
+        <p />
         <form onSubmit={this.onSubmitHandler}>
           {this.state.items.map((item, i) => {
             return (
@@ -149,7 +153,7 @@ export class NewReimbursementComponent extends Component<IProps, any> {
                   onChange={this.onChangeHandler}
                   required
                 />
-                <label htmlFor="amount">Amount:</label>
+                <label htmlFor="amount">Total Amount:</label>
                 <input
                   type="text"
                   name="amount"
@@ -173,12 +177,14 @@ export class NewReimbursementComponent extends Component<IProps, any> {
                   onChange={this.onChangeHandler}
                   required
                 />
+                <p />
               </div>
             );
           })}
-          <button type="submit">Submit Reimbursement</button>
+          <button type="submit" className="btn btn-primary">
+            Submit Reimbursement Request
+          </button>
         </form>
-        <Link to="/dashboard">Dashboard</Link>
       </body>
     );
   }

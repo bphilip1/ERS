@@ -33,7 +33,7 @@ export class DashboardComponent extends Component<any, any> {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item active">
                 <Link className="nav-link" to="/dashboard">
-                  Home
+                  Dashboard
                   <span className="sr-only">(current)</span>
                 </Link>
               </li>
@@ -50,13 +50,13 @@ export class DashboardComponent extends Component<any, any> {
             </ul>
           </div>
         </nav>
-
+        <p />
         <div className="container">
           <div className="row">
             <div className="col">
               {this.props.userRole === 'employee' && (
                 <table className="table">
-                  <thead>
+                  <thead className="thead-dark">
                     <tr>
                       <th scope="col">Username</th>
                       <th scope="col">Timesubmitted</th>
