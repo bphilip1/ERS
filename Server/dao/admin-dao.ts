@@ -27,21 +27,23 @@ export const findTicketsByStatus = status => {
 };
 
 export function updateStatus(reimbursement): Promise<any> {
+  console.log('in updatestatus:', reimbursement);
   return docClient
     .update({
       TableName: 'reimbursements',
       Key: {
         username: reimbursement.username,
-        timesubmitted: reimbursement.timesubmitted
+        timesubmitted: +reimbursement.timesubmitted
       },
-      UpdateExpression: 'set #stat = :s',
+      UpdateExpression: 'SET #stat = :s, #appr = :ap',
       ExpressionAttributeNames: {
-        '#stat': 'status'
+        '#stat': 'status',
+        '#appr': 'approver'
       },
       ExpressionAttributeValues: {
-        ':s': reimbursement.status
-      },
-      ReturnValues: 'UPDATED_NEW'
+        ':s': reimbursement.approvalDecision,
+        ':ap': reimbursement.firstName
+      }
     })
     .promise();
 }

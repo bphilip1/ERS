@@ -4,6 +4,6 @@ export function findTicketsByStatus(status) {
   return adminDao.findTicketsByStatus(status);
 }
 
-export function upateStatus(userData) {
-  return adminDao.updateStatus(userData.reimbursement);
+export function upateStatus(updateData) {
+  return adminDao.updateStatus(updateData);
 }

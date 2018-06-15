@@ -43,9 +43,7 @@ export class SignUpComponent extends Component<any, any> {
   render() {
     return (
       <form className="form-signin" onSubmit={this.onSubmitHandler}>
-        <h1 className="h3 mb-3 font-weight-normal">
-          Please input your information
-        </h1>
+        <h1 className="h3 mb-3 font-weight-normal">ERS</h1>
         <input
           type="text"
           id="inputUsername"

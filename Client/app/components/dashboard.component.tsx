@@ -9,34 +9,14 @@ export class DashboardComponent extends Component<any, any> {
     password: ''
   };
 
-  // onSubmitHandler = e => {
-  //   e.preventDefault();
-
-  //   const user = {
-  //     username: 'bird',
-  //     password: '12345'
-  //   };
-
-  //   axios
-  //     .get('/viewAll', {
-  //       params: {
-  //         username: user.username
-  //       }
-  //     })
-  //     .then(resp => resp.data)
-  //     .then(user => {
-  //       console.log(user);
-  //     });
-  // };
-
   submitAdminApproval = e => {
-    const timesubmitted = e.target.dataset.key;
-    const username = e.target.dataset.username;
+    const timesubmitted = e.target.parentNode.parentNode.dataset.uid;
+    const username = e.target.parentNode.parentNode.dataset.username;
     const verdict = e.target.dataset.verdict;
 
     const dataObj = {
       firstName: this.props.firstname,
-      userRole: this.props.role,
+      userRole: this.props.userRole,
       approvalDecision: verdict,
       timesubmitted: timesubmitted,
       username: username
@@ -60,6 +40,11 @@ export class DashboardComponent extends Component<any, any> {
               <li className="nav-item">
                 <Link className="nav-link" to="/create">
                   Add Reimbursement
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Log Out
                 </Link>
               </li>
             </ul>
@@ -135,7 +120,7 @@ export class DashboardComponent extends Component<any, any> {
                       </tr>
                     </thead>
                     <tbody>
-                      {this.props.reimbursements.map(item => {
+                      {this.props.everyReimbursement.map(item => {
                         const numToDate = new Date(item.timesubmitted);
                         const checkHour =
                           +numToDate.getHours() > 12
@@ -145,7 +130,7 @@ export class DashboardComponent extends Component<any, any> {
                         return (
                           <tr
                             key={item.timesubmitted}
-                            data-key={item.timesubmitted}
+                            data-uid={item.timesubmitted}
                             data-username={item.username}
                           >
                             <th scope="row">{item.username}</th>
@@ -176,14 +161,18 @@ export class DashboardComponent extends Component<any, any> {
                             <td>{item.status}</td>
                             <td>
                               <button
+                                type="button"
                                 onClick={this.submitAdminApproval}
                                 data-verdict="approved"
+                                className="btn btn-success"
                               >
                                 Approve
                               </button>{' '}
                               <button
+                                type="button"
                                 onClick={this.submitAdminApproval}
                                 data-verdict="denied"
+                                className="btn btn-danger"
                               >
                                 Deny
                               </button>
@@ -206,7 +195,9 @@ export class DashboardComponent extends Component<any, any> {
 const mapStateToProps = state => ({
   reimbursements: state.reim.reimbursements,
   userRole: state.user.role,
-  username: state.user.username
+  username: state.user.username,
+  everyReimbursement: state.reim.everyReimbursement,
+  firstname: state.user.firstname
 });
 
 const mapDispatchToProps = dispatch => ({

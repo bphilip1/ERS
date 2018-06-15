@@ -18,25 +18,19 @@ module.exports = app => {
           console.log('hash pass:', maybeUser.password);
           console.log('client plain text pass:', req.body.user.password);
           if (bcrypt.compareSync(req.body.user.password, maybeUser.password)) {
-            if (maybeUser.role === 'admin') {
-              console.log('now in admin scope');
-              adminService.findTicketsByStatus('pending').then(data => {
-                maybeUser['everyReimbursement'] = data.Items;
-                const fullData = {
-                  reimbursements: maybeReim,
-                  ...maybeUser
-                };
-                console.log(fullData);
-                return resp.json(fullData);
-              });
-            }
-            console.log('skipped the IF');
-            const fullData = {
-              reimbursements: maybeReim,
-              ...maybeUser
-            };
-            console.log(fullData);
-            resp.json(fullData);
+            adminService.findTicketsByStatus('pending').then(data => {
+              console.log('userRole:', maybeUser.role);
+              const fullData = {
+                everyReimbursement:
+                  data.Items.length > 0 && maybeUser.role === 'admin'
+                    ? data.Items
+                    : null,
+                reimbursements: maybeReim,
+                ...maybeUser
+              };
+              console.log(fullData);
+              return resp.json(fullData);
+            });
           } else {
             console.log('invalid password');
             resp.status(400).end();
