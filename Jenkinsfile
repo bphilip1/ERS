@@ -52,10 +52,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                    dir('ERS') {
                         // Deploy the application
-                        s3Upload(bucket:"${BUCKET_NAME}", path:'', file: 'build/')
-                }
+                        s3Upload(bucket:"${BUCKET_NAME}", path:'', file: 'dist/')
             }
         }
 
