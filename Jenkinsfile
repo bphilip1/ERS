@@ -52,11 +52,9 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                dir('week4') {
-                    dir('redux-demo') {
+                    dir('ERS') {
                         // Deploy the application
                         s3Upload(bucket:"${BUCKET_NAME}", path:'', file: 'build/')
-                    }
                 }
             }
         }
