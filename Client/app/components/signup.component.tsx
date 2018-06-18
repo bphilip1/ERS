@@ -87,10 +87,10 @@ export class SignUpComponent extends Component<any, any> {
             </label>
           </div>
           <button className="btn btn-lg btn-primary btn-block" type="submit">
-            Sign in
+            Sign Up
           </button>
           <p>
-            Do you already have an Account? <Link to="/login">Login</Link>
+            Already have an Account? <Link to="/login">Login</Link>
           </p>
         </form>
       </body>
